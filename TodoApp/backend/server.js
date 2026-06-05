@@ -2,13 +2,14 @@ const express = require("express");
 const app = express();
 const sql = require("mssql");
 const cors = require("cors");
+const { getUsers } = require("./controllers/todo");
 
 app.use(cors());
 app.use(express.json());
 
 const dbConfig = {
   server: "localhost",
-  database: "TodoDB",
+  database: "MyDB",
   options: {
     instanceName: "SQLEXPRESS",
     trustServerCertificate: true,
@@ -36,6 +37,8 @@ sql.connect(dbConfig)
 // ======================
 // GET ALL TODOS
 // ======================
+
+app.get("/allusers",getUsers)
 app.get("/getTodo", async (req, res) => {
   try {
     const result = await sql.query(`

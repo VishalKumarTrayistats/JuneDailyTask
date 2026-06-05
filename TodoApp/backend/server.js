@@ -9,7 +9,7 @@ app.use(express.json());
 
 const dbConfig = {
   server: "localhost",
-  database: "MyDB",
+  database: "TodoDB",
   options: {
     instanceName: "SQLEXPRESS",
     trustServerCertificate: true,
@@ -42,9 +42,7 @@ app.get("/allusers",getUsers)
 app.get("/getTodo", async (req, res) => {
   try {
     const result = await sql.query(`
-      SELECT * FROM Todos
-      ORDER BY Id DESC
-    `);
+      SELECT * FROM Todoss`);
 
     res.status(200).json(result.recordset);
   } catch (error) {
@@ -59,14 +57,16 @@ app.get("/getTodo", async (req, res) => {
 // ======================
 app.post("/createTodo", async (req, res) => {
   try {
-    const { title } = req.body;
+    const { Name,Age } = req.body;
 
-    await sql.query(`
-      INSERT INTO Todos (Title)
-      VALUES ('${title}')
-    `);
-
+ const result=  await sql.query(`
+  INSERT INTO Todoss (Name, Age)
+  VALUES ('${Name}', ${Age})
+`);
+console.log(result);
     res.status(201).json({
+      name:Name,
+      age:Age,
       message: "Todo Created Successfully",
     });
   } catch (error) {
